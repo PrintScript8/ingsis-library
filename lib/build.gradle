@@ -30,6 +30,10 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:29.0-jre'
+
+    implementation 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.6'
+    implementation 'org.jetbrains.kotlinx:kover:0.6.1'
+    implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.11.0'
 }
 
 //publishing {
