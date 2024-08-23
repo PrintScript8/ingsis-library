@@ -2,7 +2,7 @@ name: PrintScript CI
 
 on:
   - push
-  - workflow_dispatch
+  - workflow_call
 
 jobs:
   build:
