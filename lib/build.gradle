@@ -11,6 +11,17 @@ plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
     id 'maven-publish'
+
+    //Apply the spotless plugin
+    id 'com.diffplug.spotless' version '6.11.0'
+
+    //Apply the detekt plugin
+    id 'io.gitlab.arturbosch.detekt' version '1.23.6'
+
+    //Apply the kover plugin
+    id 'org.jetbrains.kotlinx.kover' version '0.6.1'
+
+
 }
 
 group = 'edu.austral.ingsis'
@@ -30,10 +41,10 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:29.0-jre'
-
-    implementation 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.6'
-    implementation 'org.jetbrains.kotlinx:kover:0.6.1'
-    implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.11.0'
+//
+//    implementation 'io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.6'
+//    implementation 'org.jetbrains.kotlinx:kover:0.6.1'
+//    implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.11.0'
 }
 
 //publishing {
