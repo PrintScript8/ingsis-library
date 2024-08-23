@@ -21,4 +21,4 @@ jobs:
       - name: Check detekt
         run: ./gradlew detekt
       - name: Check kover
-        run: ./gradlew kover
+        run: ./gradlew koverVerify
