@@ -6,6 +6,10 @@ on:
       service_name:
         required: true
         type: string
+      run_docker_compose:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   push_to_registry:
@@ -19,6 +23,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 21
+
+      - name: Run Docker Compose
+        if: ${{ inputs.run_docker_compose }}
+        run: docker-compose up
 
       - name: Build with Gradle
         run: ./gradlew build
