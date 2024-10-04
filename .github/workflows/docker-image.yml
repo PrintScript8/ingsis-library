@@ -43,4 +43,4 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/austral/ingsis/${{ inputs.service_name }}:latest
+            ghcr.io/PrintScript8/${{ inputs.service_name }}:latest
