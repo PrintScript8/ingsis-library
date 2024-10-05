@@ -18,15 +18,20 @@ jobs:
         with:
           java-version: 21
 
+      - name: Load environment variables from .env file
+        run: |
+          cat .env | grep -v '^#' >> $GITHUB_ENV
+        shell: bash
+
       - name: Run Docker Compose
         if: ${{ inputs.run_docker_compose }}
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: './docker-compose.yaml'
         env:
-          DB_USER: ${DB_USER}
-          DB_PASSWORD: ${DB_PASSWORD}
-          DB_NAME: ${DB_NAME}
+          DB_USER: ${{ env.DB_USER }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          DB_NAME: ${{ env.DB_NAME }}
 
       - name: Build with Gradle
         run: ./gradlew build
