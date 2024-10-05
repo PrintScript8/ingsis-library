@@ -18,18 +18,11 @@ jobs:
         with:
           java-version: 21
 
-#      - name: Run Docker Compose
-#        if: ${{ inputs.run_docker_compose }}
-#        uses: hoverkraft-tech/compose-action@v2.0.1
-#        with:
-#          compose-file: './docker-compose.yaml'
-#        env:
-#          DB_USER: ${{ secrets.DB_USER }}
-#          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-#          DB_NAME: ${{ secrets.DB_NAME }}
-#          DB_PORT: ${{ secrets.DB_PORT }}
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-      # Step to create the .env file
       - name: Create .env file
         run: |
           echo "DB_USER=${{ secrets.DB_USER }}" >> .env
@@ -37,23 +30,16 @@ jobs:
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
+      - name: Run Docker Compose
+        if: ${{ inputs.run_docker_compose }}
+        run: docker-compose up -d
+
+
       - name: Build with Gradle
-        uses: cloudposse/github-action-docker-compose-test-run@main
-        with:
-          file: docker-compose.yaml
-          service: db
-          command: ./gradlew build
-          registry: ''
+        run: ./gradlew build
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-#
-#      - name: Build with Gradle
-#        run: ./gradlew build
-#        env:
-#          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check Spotless
         run: ./gradlew spotlessCheck
       - name: Check detekt
