@@ -43,11 +43,10 @@ jobs:
         run: ./gradlew spotlessCheck
       - name: Check detekt
         run: ./gradlew detekt
-      - name: Check kover
-        run: ./gradlew koverVerify
-
       - name: Stop Docker
         run: docker-compose down
 
+      - name: Check kover
+        run: ./gradlew koverVerify
       - name: Check test
         run: ./gradlew test
