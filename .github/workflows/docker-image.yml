@@ -20,28 +20,6 @@ jobs:
         with:
           java-version: 21
 
-      - name: Create .env file
-        run: |
-          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-        working-directory: './'
-
-      - name: Build ignoring tests
-        run: |
-          chmod +x gradlew
-          ./gradlew build -x test
-        env:
-          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Install and run Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-          docker-compose up
-
       - name: Docker Login
         uses: docker/login-action@v3.3.0
         with:
