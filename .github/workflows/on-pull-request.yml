@@ -18,26 +18,34 @@ jobs:
         with:
           java-version: 21
 
-      - name: Docker Setup Buildx
-        uses: docker/setup-buildx-action@v3.7.1
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_PORT: ${{ secrets.DB_PORT }}
+#      - name: Run Docker Compose
+#        if: ${{ inputs.run_docker_compose }}
+#        uses: hoverkraft-tech/compose-action@v2.0.1
+#        with:
+#          compose-file: './docker-compose.yaml'
+#        env:
+#          DB_USER: ${{ secrets.DB_USER }}
+#          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+#          DB_NAME: ${{ secrets.DB_NAME }}
+#          DB_PORT: ${{ secrets.DB_PORT }}
 
-      - name: Run Docker Compose
-        if: ${{ inputs.run_docker_compose }}
-        uses: hoverkraft-tech/compose-action@v2.0.1
+      - name: Build
+        uses: cloudposse/github-action-docker-compose-test-run@main
         with:
-          compose-file: './docker-compose.yaml'
-
-
-      - name: Build with Gradle
-        run: ./gradlew build
+          file: docker-compose.yaml
+          service: app
+          command: ./gradlew build
+          registry: ''
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#
+#      - name: Build with Gradle
+#        run: ./gradlew build
+#        env:
+#          GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Check Spotless
         run: ./gradlew spotlessCheck
       - name: Check detekt
