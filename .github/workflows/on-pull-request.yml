@@ -20,7 +20,7 @@ jobs:
 
       - name: Run Docker Compose
         if: ${{ inputs.run_docker_compose }}
-        run: docker-compose up
+        uses: hoverkraft-tech/compose-action@v0.0.0
 
       - name: Build with Gradle
         run: ./gradlew build
