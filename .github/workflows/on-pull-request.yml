@@ -2,11 +2,6 @@ name: PrintScript CI
 
 on:
   workflow_call:
-    inputs:
-      run_docker_compose:
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   reusable_workflow_job:
@@ -26,16 +21,19 @@ jobs:
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
         working-directory: './'
 
-      - name: Docker compose tests run
-        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
-        with:
-          command: './gradlew build'
-          file: 'docker-compose.yaml'
-          registry: ghcr.io
-          service: ''
+      - name: Build ignoring tests
+        run: |
+          chmod +x gradlew
+          ./gradlew build -x test
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install and run Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+          docker-compose up
 
       - name: Check Spotless
         run: ./gradlew spotlessCheck
@@ -45,3 +43,6 @@ jobs:
         run: ./gradlew koverVerify
       - name: Check test
         run: ./gradlew test
+
+      - name: Stop Docker
+        run: docker-compose down
