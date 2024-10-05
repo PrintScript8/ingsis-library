@@ -40,13 +40,13 @@ jobs:
           docker-compose up -d
 
       - name: Check Spotless
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew spotlessCheck
+        run: ./gradlew spotlessCheck
       - name: Check detekt
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew detekt
+        run: ./gradlew detekt
       - name: Check kover
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew koverVerify
+        run: ./gradlew koverVerify
       - name: Check test
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew test
+        run: ./gradlew test
 
       - name: Stop Docker
         run: docker-compose down
