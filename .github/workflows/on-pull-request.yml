@@ -33,20 +33,40 @@ jobs:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install and run Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-          docker-compose up
+#      - name: Install and run Docker
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -y docker-compose
+#          docker-compose up
 
       - name: Check Spotless
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew spotlessCheck
+        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
+        with:
+          command: 'docker-compose exec ${{inputs.service_name}} ./gradlew spotlessCheck'
+          file: './docker-compose.yml'
+          registry: ''
+          service: ''
       - name: Check detekt
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew detekt
+        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
+        with:
+          command: 'docker-compose exec ${{inputs.service_name}} ./gradlew detekt'
+          file: './docker-compose.yml'
+          registry: ''
+          service: ''
       - name: Check kover
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew koverVerify
+        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
+        with:
+          command: 'docker-compose exec ${{inputs.service_name}} ./gradlew koverVerify'
+          file: './docker-compose.yml'
+          registry: ''
+          service: ''
       - name: Check test
-        run: docker-compose exec ${{inputs.service_name}} ./gradlew test
+        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
+        with:
+          command: 'docker-compose exec ${{inputs.service_name}} ./gradlew test'
+          file: './docker-compose.yml'
+          registry: ''
+          service: ''
 
-      - name: Stop Docker
-        run: docker-compose down
+#      - name: Stop Docker
+#        run: docker-compose down
