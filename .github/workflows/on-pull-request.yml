@@ -30,9 +30,6 @@ jobs:
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
-      - name: Run Docker Compose
-        if: ${{ inputs.run_docker_compose }}
-        run: docker-compose up -d
 
 
       - name: Build with Gradle
@@ -40,6 +37,11 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Docker Compose
+        if: ${{ inputs.run_docker_compose }}
+        run: docker-compose up -d
+
       - name: Check Spotless
         run: ./gradlew spotlessCheck
       - name: Check detekt
