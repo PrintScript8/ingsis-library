@@ -45,8 +45,9 @@ jobs:
         run: ./gradlew detekt
       - name: Check kover
         run: ./gradlew koverVerify
-      - name: Check test
-        run: ./gradlew test
 
       - name: Stop Docker
         run: docker-compose down
+
+      - name: Check test
+        run: ./gradlew test
