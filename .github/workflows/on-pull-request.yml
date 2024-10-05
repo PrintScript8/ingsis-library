@@ -23,6 +23,10 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: './docker-compose.yaml'
+        env:
+          DB_USER: ${DB_USER}
+          DB_PASSWORD: ${DB_PASSWORD}
+          DB_NAME: ${DB_NAME}
 
       - name: Build with Gradle
         run: ./gradlew build
