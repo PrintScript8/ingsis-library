@@ -41,7 +41,7 @@ jobs:
         uses: cloudposse/github-action-docker-compose-test-run@main
         with:
           file: docker-compose.yaml
-          service: app
+          service: db
           command: ./gradlew build
           registry: ''
         env:
