@@ -24,13 +24,14 @@ jobs:
           echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+        working-directory: './'
 
       - name: Docker compose tests run
         uses: cloudposse/github-action-docker-compose-test-run@0.2.0
         with:
           command: './gradlew build'
           file: 'docker-compose.yaml'
-          registry: ''
+          registry: ghcr.io
           service: ''
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
