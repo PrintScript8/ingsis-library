@@ -27,6 +27,8 @@ jobs:
       - name: Run Docker Compose
         if: ${{ inputs.run_docker_compose }}
         uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: './docker-compose.yaml'
 
       - name: Build with Gradle
         run: ./gradlew build
