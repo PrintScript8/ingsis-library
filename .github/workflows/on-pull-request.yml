@@ -2,6 +2,10 @@ name: PrintScript CI
 
 on:
   workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
 
 jobs:
   reusable_workflow_job:
@@ -36,13 +40,13 @@ jobs:
           docker-compose up
 
       - name: Check Spotless
-        run: ./gradlew spotlessCheck
+        run: docker-compose exec ${{inputs.service_name}} ./gradlew spotlessCheck
       - name: Check detekt
-        run: ./gradlew detekt
+        run: docker-compose exec ${{inputs.service_name}} ./gradlew detekt
       - name: Check kover
-        run: ./gradlew koverVerify
+        run: docker-compose exec ${{inputs.service_name}} ./gradlew koverVerify
       - name: Check test
-        run: ./gradlew test
+        run: docker-compose exec ${{inputs.service_name}} ./gradlew test
 
       - name: Stop Docker
         run: docker-compose down
