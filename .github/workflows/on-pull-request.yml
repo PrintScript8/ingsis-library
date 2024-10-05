@@ -43,28 +43,28 @@ jobs:
         uses: cloudposse/github-action-docker-compose-test-run@0.2.0
         with:
           command: 'docker-compose exec ${{inputs.service_name}} ./gradlew spotlessCheck'
-          file: './docker-compose.yml'
+          file: 'docker-compose.yml'
           registry: ''
           service: ''
       - name: Check detekt
         uses: cloudposse/github-action-docker-compose-test-run@0.2.0
         with:
           command: 'docker-compose exec ${{inputs.service_name}} ./gradlew detekt'
-          file: './docker-compose.yml'
+          file: 'docker-compose.yml'
           registry: ''
           service: ''
       - name: Check kover
         uses: cloudposse/github-action-docker-compose-test-run@0.2.0
         with:
           command: 'docker-compose exec ${{inputs.service_name}} ./gradlew koverVerify'
-          file: './docker-compose.yml'
+          file: 'docker-compose.yml'
           registry: ''
           service: ''
       - name: Check test
         uses: cloudposse/github-action-docker-compose-test-run@0.2.0
         with:
           command: 'docker-compose exec ${{inputs.service_name}} ./gradlew test'
-          file: './docker-compose.yml'
+          file: 'docker-compose.yml'
           registry: ''
           service: ''
 
