@@ -25,24 +25,16 @@ jobs:
           echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
           echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: Docker compose tests run
+        uses: cloudposse/github-action-docker-compose-test-run@0.2.0
+        with:
+          command: './gradlew build'
+          file: 'docker-compose.yaml'
+          registry: ''
+          service: ''
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run Docker Compose
-        if: ${{ inputs.run_docker_compose }}
-        uses: hoverkraft-tech/compose-action@v2.0.1
-        with:
-          compose-file: './docker-compose.yaml'
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Check Spotless
         run: ./gradlew spotlessCheck
