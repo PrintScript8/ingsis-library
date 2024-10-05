@@ -29,7 +29,15 @@ jobs:
 #          DB_NAME: ${{ secrets.DB_NAME }}
 #          DB_PORT: ${{ secrets.DB_PORT }}
 
-      - name: Build
+      # Step to create the .env file
+      - name: Create .env file
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+      - name: Build with Gradle
         uses: cloudposse/github-action-docker-compose-test-run@main
         with:
           file: docker-compose.yaml
@@ -39,10 +47,6 @@ jobs:
         env:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_PORT: ${{ secrets.DB_PORT }}
 
 #
 #      - name: Build with Gradle
