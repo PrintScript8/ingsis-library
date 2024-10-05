@@ -18,12 +18,15 @@ jobs:
         with:
           java-version: 21
 
-#      - name: Create .env file
-#        run: |
-#          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
-#          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-#          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
-#          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+      - name: Create .env file
+        run: |
+          echo "DB_USER=${{ secrets.DB_USER }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+          echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env
+          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         run: ./gradlew build
