@@ -31,7 +31,7 @@ jobs:
 
       - name: Install Docker
         run: |
-          sudo apt install docker.io -y
+          sudo apt install docker
 
       - name: Install Docker Compose
         run: |
