@@ -31,8 +31,6 @@ jobs:
 
       - name: Install Docker
         run: |
-          sudo apt-get remove docker docker-engine docker.io
-          sudo apt-get update
           sudo apt install docker.io
 
       - name: Install Docker Composer
