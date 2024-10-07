@@ -29,12 +29,14 @@ jobs:
           GITHUB_ACTOR: ${{ secrets.GITHUB_ACTOR }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install and run Docker
-        run: |
-          sudo apt install docker
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
-          docker-compose up -d
+      - name: Install Docker
+        run: sudo apt install docker
+
+      - name: Install Docker Composer
+        run: sudo apt-get install -y docker-compose
+
+      - name: Run Docker
+        run: docker-compose up -d
 
       - name: Check Spotless
         run: ./gradlew spotlessCheck
