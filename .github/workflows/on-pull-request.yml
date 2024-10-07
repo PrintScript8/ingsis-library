@@ -31,13 +31,15 @@ jobs:
 
       - name: Install Docker
         run: |
-          sudo apt-get update
-          sudo apt install docker
+          sudo apt install docker.io -y
 
-      - name: Install Docker Composer
+      - name: Install Docker Compose
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+          sudo apt install docker-compose -y
+
+      - name: Install PostgreSQL
+        run: |
+          sudo apt install postgresql-client -y
 
       - name: Run Docker
         run: docker-compose up -d
