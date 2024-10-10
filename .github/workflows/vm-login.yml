@@ -1,0 +1,30 @@
+name: "Update vm docker"
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+      is_dev:
+        required: true
+        type: boolean
+
+jobs:
+  vm_actions:
+    name: Update VM Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.is_dev && secrets.ssh_host_dev || secrets.ssh_host }}
+          username: ${{ secrets.is_dev && secrets.ssh_user_dev || secrets.ssh_user }}
+          key: ${{ secrets.is_dev && secrets.ssh_key_dev || secrets.ssh_key }}
+          port: 22
+          script: |
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/printscript8/${{ inputs.service_name }}:latest
+            docker stop ${{ inputs.service_name }} || true
+            docker rm ${{ inputs.service_name }} || true
+            docker run -d --name ${{ inputs.service_name }} -p 8080:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
