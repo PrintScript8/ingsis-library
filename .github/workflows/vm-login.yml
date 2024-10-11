@@ -9,6 +9,9 @@ on:
       is_dev:
         required: false
         type: boolean
+      port:
+        required: false
+        type: string
 
 jobs:
   vm_actions:
@@ -45,5 +48,5 @@ jobs:
             else
               # Default case: Run the container directly
               echo "Running the container without docker-compose"
-              sudo docker run -d --name ${{ inputs.service_name }} -p 8080:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
+              sudo docker run -d --name ${{ inputs.service_name }} -p ${{inputs.port}}:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
             fi
