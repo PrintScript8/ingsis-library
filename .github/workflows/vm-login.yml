@@ -24,9 +24,9 @@ jobs:
       - name: Login to VM
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ inputs.is_dev && secrets.ssh_host_dev || secrets.ssh_host }}
-          username: ${{ inputs.is_dev && secrets.ssh_user_dev || secrets.ssh_user }}
-          key: ${{ inputs.is_dev && secrets.ssh_key_dev || secrets.ssh_key }}
+          host: ${{ inputs.is_dev && secrets.SSH_HOST_DEV || secrets.ssh_host }}
+          username: ${{ inputs.is_dev && secrets.SSH_USER_DEV || secrets.ssh_user }}
+          key: ${{ inputs.is_dev && secrets.SSH_KEY_DEV || secrets.ssh_key }}
           port: 22
           script: |
             cd Infraestructure
