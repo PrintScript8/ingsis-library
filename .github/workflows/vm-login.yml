@@ -26,24 +26,24 @@ jobs:
             cd Infraestructure
             
             # Log in to Docker
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
+            sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
             
             # Pull the latest image
-            docker pull ghcr.io/printscript8/${{ inputs.service_name }}:latest
+            sudo docker pull ghcr.io/printscript8/${{ inputs.service_name }}:latest
             
             # Stop and remove any existing container
-            docker stop ${{ inputs.service_name }} || true
-            docker rm ${{ inputs.service_name }} || true
+            sudo docker stop ${{ inputs.service_name }} || true
+            sudo docker rm ${{ inputs.service_name }} || true
             
             # Determine if we are in dev or prod environment based on 'is_dev' input
             if [ ${{ inputs.is_dev }} = "true" ]; then
               echo "Running docker-compose.dev.yaml"
-              docker-compose -f docker-compose.dev.yaml up -d
+              sudo docker-compose -f docker-compose.dev.yaml up -d
             elif [ ${{ inputs.is_dev }} = "false" ]; then
               echo "Running docker-compose.prod.yml"
-              docker-compose -f docker-compose.prod.yaml up -d
+              sudo docker-compose -f docker-compose.prod.yaml up -d
             else
               # Default case: Run the container directly
               echo "Running the container without docker-compose"
-              docker run -d --name ${{ inputs.service_name }} -p 8080:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
+              sudo docker run -d --name ${{ inputs.service_name }} -p 8080:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
             fi
