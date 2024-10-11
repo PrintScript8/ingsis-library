@@ -23,6 +23,8 @@ jobs:
           key: ${{ inputs.is_dev && secrets.ssh_key_dev || secrets.ssh_key }}
           port: 22
           script: |
+            cd Infraestructure
+            
             # Log in to Docker
             docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
             
@@ -35,11 +37,11 @@ jobs:
             
             # Determine if we are in dev or prod environment based on 'is_dev' input
             if [ ${{ inputs.is_dev }} = "true" ]; then
-              echo "Running docker-compose.dev.yml"
-              docker-compose -f docker-compose.dev.yml up -d
+              echo "Running docker-compose.dev.yaml"
+              docker-compose -f docker-compose.dev.yaml up -d
             elif [ ${{ inputs.is_dev }} = "false" ]; then
               echo "Running docker-compose.prod.yml"
-              docker-compose -f docker-compose.prod.yml up -d
+              docker-compose -f docker-compose.prod.yaml up -d
             else
               # Default case: Run the container directly
               echo "Running the container without docker-compose"
