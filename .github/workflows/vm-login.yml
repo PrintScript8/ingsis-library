@@ -28,7 +28,7 @@ jobs:
           user: ${{ secrets.SSH_USER_DEV }}
           key: ${{ secrets.SSH_KEY_DEV}}
           command: |
-            cd Infraestructure
+            cd Infrastructure
             
             # Log in to Docker
             sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
