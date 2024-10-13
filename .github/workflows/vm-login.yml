@@ -16,9 +16,6 @@ on:
         required: false
         type: string
 
-permissions:
-  secrets: read
-
 jobs:
   vm_actions:
     name: Update VM Docker Image
