@@ -24,9 +24,9 @@ jobs:
       - name: Login to VM
         uses: nekiro/ssh-job@v1.0.5
         with:
-          host: ${{ inputs.is_dev && secrets.SSH_HOST_DEV || secrets.ssh_host }}
-          user: ${{ inputs.is_dev && secrets.SSH_USER_DEV || secrets.ssh_user }}
-          key: ${{ inputs.is_dev && secrets.SSH_KEY_DEV || secrets.ssh_key }}
+          host: ${{ secrets.SSH_HOST_DEV }}
+          user: ${{ secrets.SSH_USER_DEV }}
+          key: ${{ secrets.SSH_KEY_DEV}}
           command: |
             cd Infraestructure
             
