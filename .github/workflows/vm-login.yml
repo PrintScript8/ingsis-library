@@ -15,15 +15,6 @@ on:
       port:
         required: false
         type: string
-      host:
-        required: true
-        type: string
-      user:
-        required: true
-        type: string
-      key:
-        required: true
-        type: string
 
 jobs:
   vm_actions:
@@ -33,9 +24,9 @@ jobs:
       - name: Login to VM
         uses: nekiro/ssh-job@v1.0.5
         with:
-          host: ${{ inputs.host }}
-          user: ${{ inputs.user }}
-          key: ${{ inputs.key }}
+          host: ${{ secrets.SSH_HOST_DEV }}
+          user: ${{ secrets.SSH_USER_DEV }}
+          key: ${{ secrets.SSH_KEY_DEV }}
           command: |
             cd Infrastructure
             
