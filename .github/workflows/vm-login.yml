@@ -22,13 +22,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Login to VM
-        uses: appleboy/ssh-action@master
+        uses: nekiro/ssh-job@v1.0.5
         with:
           host: ${{ inputs.is_dev && secrets.SSH_HOST_DEV || secrets.ssh_host }}
-          username: ${{ inputs.is_dev && secrets.SSH_USER_DEV || secrets.ssh_user }}
+          user: ${{ inputs.is_dev && secrets.SSH_USER_DEV || secrets.ssh_user }}
           key: ${{ inputs.is_dev && secrets.SSH_KEY_DEV || secrets.ssh_key }}
-          port: 22
-          script: |
+          command: |
             cd Infraestructure
             
             # Log in to Docker
