@@ -2,6 +2,13 @@ name: "Update VM Docker"
 
 on:
   workflow_call:
+    secrets:
+      DEV_HOST:
+        required: true
+      DEV_USER:
+        required: true
+      DEV_KEY:
+        required: true
     inputs:
       service_name:
         required: true
@@ -27,9 +34,9 @@ jobs:
       - name: Login to VM
         uses: nekiro/ssh-job@v1.0.5
         with:
-          user: ${{ secrets.dev_user }}
-          key: ${{ secrets.dev_key }}
-          host: ${{ secrets.dev_host }}
+          user: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.DEV_KEY }}
+          host: ${{ secrets.DEV_HOST }}
           command: |
             cd Infrastructure
             
