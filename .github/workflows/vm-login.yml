@@ -17,10 +17,14 @@ on:
         type: string
 
 jobs:
+
   vm_actions:
     name: Update VM Docker Image
     runs-on: ubuntu-latest
     steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
       - name: Login to VM
         uses: nekiro/ssh-job@v1.0.5
         with:
