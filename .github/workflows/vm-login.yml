@@ -16,8 +16,10 @@ on:
         required: false
         type: string
 
-jobs:
+permissions:
+  secrets: read
 
+jobs:
   vm_actions:
     name: Update VM Docker Image
     runs-on: ubuntu-latest
