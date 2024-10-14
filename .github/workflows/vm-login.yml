@@ -44,24 +44,24 @@ jobs:
             sudo docker rm ${{ inputs.service_name }} || true
             
             # Determine if we are in dev or prod environment based on 'is_dev' and 'is_image' inputs
-            if [ ${{ inputs.is_dev }} = "true" ]; then
-            if [ ${{ inputs.is_image }} = "true" ]; then
-            echo "Running docker-compose.dev.yaml with image"
-            sudo docker-compose -f docker-compose.dev.yaml up -d
+            if [ "${{ inputs.is_dev }}" = "true" ]; then
+              if [ "${{ inputs.is_image }}" = "true" ]; then
+                echo "Running docker-compose.dev.yaml with image"
+                sudo docker-compose -f docker-compose.dev.yaml up -d
+              else
+                echo "Running docker-compose.dev.yaml without image"
+                sudo docker-compose -f docker-compose.dev.yaml up -d --no-build
+              fi
+            elif [ "${{ inputs.is_dev }}" = "false" ]; then
+              if [ "${{ inputs.is_image }}" = "true" ]; then
+                echo "Running docker-compose.prod.yaml with image"
+                sudo docker-compose -f docker-compose.prod.yaml up -d
+              else
+                echo "Running docker-compose.prod.yaml without image"
+                sudo docker-compose -f docker-compose.prod.yaml up -d --no-build
+              fi
             else
-            echo "Running docker-compose.dev.yaml without image"
-            sudo docker-compose -f docker-compose.dev.yaml up -d --no-build
-            fi
-            elif [ ${{ inputs.is_dev }} = "false" ]; then
-            if [ ${{ inputs.is_image }} = "true" ]; then
-            echo "Running docker-compose.prod.yaml with image"
-            sudo docker-compose -f docker-compose.prod.yaml up -d
-            else
-            echo "Running docker-compose.prod.yaml without image"
-            sudo docker-compose -f docker-compose.prod.yaml up -d --no-build
-            fi
-            else
-            # Default case: Run the container directly
-            echo "Running the container without docker-compose"
-            sudo docker run -d --name ${{ inputs.service_name }} -p ${{inputs.port}}:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
+              # Default case: Run the container directly
+              echo "Running the container without docker-compose"
+              sudo docker run -d --name ${{ inputs.service_name }} -p ${{ inputs.port }}:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
             fi
