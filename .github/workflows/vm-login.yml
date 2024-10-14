@@ -2,13 +2,6 @@ name: "Update VM Docker"
 
 on:
   workflow_call:
-    secrets:
-      DEV_HOST:
-        required: true
-      DEV_USER:
-        required: true
-      DEV_KEY:
-        required: true
     inputs:
       service_name:
         required: true
