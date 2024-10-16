@@ -31,7 +31,7 @@ jobs:
           privateKey: ${{ secrets.DEV_KEY }}
           host: ${{ secrets.DEV_HOST }}
           command: |
-            cd Infrastructure
+            'cd Infrastructure
 
             # Log in to Docker
               sudo docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}"
@@ -62,4 +62,4 @@ jobs:
                 echo "Running docker-compose.prod.yaml"
                 sudo docker-compose -f docker-compose.prod.yaml up -d
               fi
-            fi
+            fi'
