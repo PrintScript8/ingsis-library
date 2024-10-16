@@ -24,7 +24,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Login to VM and execute script
+      - name: Login to VM
         uses: nekiro/ssh-job@v1.0.5
         with:
           user: ${{ secrets.DEV_USER }}
@@ -38,47 +38,36 @@ jobs:
               "PORT": "${{ inputs.port }}"
             }
           command: |
-            # Create a temporary script file on the VM
-            echo '
-            cd Infrastructure
-
+            'cd Infrastructure &&
             # Log in to Docker
-            sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-
+            sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }} &&
+            
             # Pull the latest image
-            sudo docker pull ghcr.io/printscript8/${SERVICE_NAME}:latest
-
+            sudo docker pull ghcr.io/printscript8/${SERVICE_NAME}:latest &&
+            
             # Stop and remove any existing container
-            sudo docker stop ${SERVICE_NAME} || true
-            sudo docker rm ${SERVICE_NAME} || true
-
+            sudo docker stop ${SERVICE_NAME} || true &&
+            sudo docker rm ${SERVICE_NAME} || true &&
+            
             # Determine if we are in dev or prod environment based on IS_DEV and IS_IMAGE inputs
             if [ "${IS_DEV}" = "true" ]; then
               if [ "${IS_IMAGE}" = "true" ]; then
-                echo "Running docker-compose.dev.yaml with image"
+                echo "Running docker-compose.dev.yaml with image" &&
                 sudo docker-compose -f docker-compose.dev.yaml up -d
               else
-                echo "Running docker-compose.dev.yaml without image"
+                echo "Running docker-compose.dev.yaml without image" &&
                 sudo docker-compose -f docker-compose.dev.yaml up -d --no-build
               fi
             elif [ "${IS_DEV}" = "false" ]; then
               if [ "${IS_IMAGE}" = "true" ]; then
-                echo "Running docker-compose.prod.yaml with image"
+                echo "Running docker-compose.prod.yaml with image" &&
                 sudo docker-compose -f docker-compose.prod.yaml up -d
               else
-                echo "Running docker-compose.prod.yaml without image"
+                echo "Running docker-compose.prod.yaml without image" &&
                 sudo docker-compose -f docker-compose.prod.yaml up -d --no-build
               fi
             else
               # Default case: Run the container directly
-              echo "Running the container without docker-compose"
+              echo "Running the container without docker-compose" &&
               sudo docker run -d --name ${SERVICE_NAME} -p ${PORT}:8080 ghcr.io/printscript8/${SERVICE_NAME}:latest
-            fi
-            ' > /tmp/update_vm_docker.sh
-
-            # Make the script executable and run it
-            chmod +x /tmp/update_vm_docker.sh
-            /tmp/update_vm_docker.sh
-
-            # Clean up the temporary script
-            rm /tmp/update_vm_docker.sh
+            fi'
