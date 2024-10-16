@@ -43,35 +43,33 @@ jobs:
             cd Infrastructure
 
             # Log in to Docker
-            sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
-
+              sudo docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}"
+              
             # Pull the latest image
             sudo docker pull ghcr.io/printscript8/${SERVICE_NAME}:latest
-
-            # Stop and remove any existing container
+            
+            # Ensure existing container is stopped and removed, regardless of IS_IMAGE
             sudo docker stop ${SERVICE_NAME} || true
             sudo docker rm ${SERVICE_NAME} || true
-
+            
             # Determine if we are in dev or prod environment based on IS_DEV and IS_IMAGE inputs
-            if [ "${IS_DEV}" = "true" ]; then
-              if [ "${IS_IMAGE}" = "true" ]; then
-                echo "Running docker-compose.dev.yaml with image"
-                sudo docker-compose -f docker-compose.dev.yaml up -d
-              else
-                echo "Running docker-compose.dev.yaml without image"
-                sudo docker-compose -f docker-compose.dev.yaml up -d --no-build
-              fi
-            elif [ "${IS_DEV}" = "false" ]; then
-              if [ "${IS_IMAGE}" = "true" ]; then
-                echo "Running docker-compose.prod.yaml with image"
-                sudo docker-compose -f docker-compose.prod.yaml up -d
-              else
-                echo "Running docker-compose.prod.yaml without image"
-                sudo docker-compose -f docker-compose.prod.yaml up -d --no-build
-              fi
-            else
-              # Default case: Run the container directly
+            if [ "${IS_IMAGE}" = "true" ]; then
+              # If IS_IMAGE is true, run only the Docker image
               echo "Running the container without docker-compose"
               sudo docker run -d --name ${SERVICE_NAME} -p ${PORT}:8080 ghcr.io/printscript8/${SERVICE_NAME}:latest
+            else
+              # If IS_IMAGE is false, first stop all running containers
+              echo "Stopping all running containers..."
+              sudo docker stop $(sudo docker ps -q) || true
+              sudo docker rm $(sudo docker ps -aq) || true
+          
+              # Proceed with docker-compose based on the environment
+              if [ "${IS_DEV}" = "true" ]; then
+                echo "Running docker-compose.dev.yaml"
+                sudo docker-compose -f docker-compose.dev.yaml up -d
+              else
+                echo "Running docker-compose.prod.yaml"
+                sudo docker-compose -f docker-compose.prod.yaml up -d
+              fi
             fi
             ' > update_vm_docker.sh | chmod +x update_vm_docker.sh | bash update_vm_docker.sh | rm update_vm_docker.sh
