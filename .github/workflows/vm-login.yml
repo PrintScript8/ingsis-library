@@ -30,6 +30,13 @@ jobs:
           user: ${{ secrets.DEV_USER }}
           key: ${{ secrets.DEV_KEY }}
           host: ${{ secrets.DEV_HOST }}
+          envs: |
+            {
+              "SERVICE_NAME": "${{ inputs.service_name }}",
+              "IS_DEV": "${{ inputs.is_dev }}",
+              "IS_IMAGE": "${{ inputs.is_image }}",
+              "PORT": "${{ inputs.port }}"
+            }
           command: |
             cd Infrastructure
             
@@ -37,23 +44,23 @@ jobs:
             sudo docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GITHUB_TOKEN }}
             
             # Pull the latest image
-            sudo docker pull ghcr.io/printscript8/${{ inputs.service_name }}:latest
+            sudo docker pull ghcr.io/printscript8/${SERVICE_NAME}:latest
             
             # Stop and remove any existing container
-            sudo docker stop ${{ inputs.service_name }} || true
-            sudo docker rm ${{ inputs.service_name }} || true
+            sudo docker stop ${SERVICE_NAME} || true
+            sudo docker rm ${SERVICE_NAME} || true
             
-            # Determine if we are in dev or prod environment based on 'is_dev' and 'is_image' inputs
-            if [ "${{ inputs.is_dev }}" = "true" ]; then
-              if [ "${{ inputs.is_image }}" = "true" ]; then
+            # Determine if we are in dev or prod environment based on 'IS_DEV' and 'IS_IMAGE' inputs
+            if [ "${IS_DEV}" = "true" ]; then
+              if [ "${IS_IMAGE}" = "true" ]; then
                 echo "Running docker-compose.dev.yaml with image"
                 sudo docker-compose -f docker-compose.dev.yaml up -d
               else
                 echo "Running docker-compose.dev.yaml without image"
                 sudo docker-compose -f docker-compose.dev.yaml up -d --no-build
               fi
-            elif [ "${{ inputs.is_dev }}" = "false" ]; then
-              if [ "${{ inputs.is_image }}" = "true" ]; then
+            elif [ "${IS_DEV}" = "false" ]; then
+              if [ "${IS_IMAGE}" = "true" ]; then
                 echo "Running docker-compose.prod.yaml with image"
                 sudo docker-compose -f docker-compose.prod.yaml up -d
               else
@@ -63,5 +70,5 @@ jobs:
             else
               # Default case: Run the container directly
               echo "Running the container without docker-compose"
-              sudo docker run -d --name ${{ inputs.service_name }} -p ${{ inputs.port }}:8080 ghcr.io/printscript8/${{ inputs.service_name }}:latest
+              sudo docker run -d --name ${SERVICE_NAME} -p ${PORT}:8080 ghcr.io/printscript8/${SERVICE_NAME}:latest
             fi
