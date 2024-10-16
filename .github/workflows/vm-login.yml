@@ -39,7 +39,7 @@ jobs:
             }
           command: |
             # Create a temporary script file on the VM
-            echo '
+            touch update_vm_docker.sh | echo '
             cd Infrastructure
 
             # Log in to Docker
@@ -74,4 +74,4 @@ jobs:
               echo "Running the container without docker-compose"
               sudo docker run -d --name ${SERVICE_NAME} -p ${PORT}:8080 ghcr.io/printscript8/${SERVICE_NAME}:latest
             fi
-            ' > /tmp/update_vm_docker.sh | chmod +x /tmp/update_vm_docker.sh | /tmp/update_vm_docker.sh | rm /tmp/update_vm_docker.sh
+            ' > update_vm_docker.sh | chmod +x update_vm_docker.sh | bash update_vm_docker.sh | rm update_vm_docker.sh
