@@ -33,7 +33,7 @@ jobs:
           command: |
             # Create a temporary script file on the VM
             touch update_vm_docker.sh | echo '
-            cd Infrastructure
+            cd Infralkhljljlkjstructure
 
             # Log in to Docker
               sudo docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}"
