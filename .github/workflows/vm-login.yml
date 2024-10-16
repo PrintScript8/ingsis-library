@@ -31,7 +31,7 @@ jobs:
           privateKey: ${{ secrets.DEV_KEY }}
           host: ${{ secrets.DEV_HOST }}
           command:
-            'cd Infrastructure
+            'cd Infraz,xnclkdjsalkdjaslkdjasstructure
 
             # Log in to Docker
               sudo docker login ghcr.io -u "${{ github.actor }}" -p "${{ secrets.GITHUB_TOKEN }}"
