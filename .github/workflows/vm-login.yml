@@ -31,8 +31,6 @@ jobs:
           privateKey: ${{ secrets.DEV_KEY }}
           host: ${{ secrets.DEV_HOST }}
           command: |
-            # Create a temporary script file on the VM
-            touch update_vm_docker.sh | echo '
             cd Infralkhljljlkjstructure
 
             # Log in to Docker
@@ -65,4 +63,3 @@ jobs:
                 sudo docker-compose -f docker-compose.prod.yaml up -d
               fi
             fi
-            ' > update_vm_docker.sh | chmod +x update_vm_docker.sh | bash update_vm_docker.sh | rm update_vm_docker.sh
