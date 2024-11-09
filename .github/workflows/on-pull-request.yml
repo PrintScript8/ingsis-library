@@ -59,8 +59,8 @@ jobs:
 
       - name: Check test
         run: ./gradlew test
-        env:
-          AUTH0_SECRET_KEY: ${{ secrets.AUTH0_SECRET_KEY }}
+        env_file:
+          - .env
           
 
       - name: Check kover
