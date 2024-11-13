@@ -60,7 +60,7 @@ jobs:
       - name: Check test
         run: ./gradlew test
         env:
-          AUTH0_SECRET_KEY=${{ secrets.AUTH0_SECRET_KEY }}
+          AUTH0_SECRET_KEY: ${{ secrets.AUTH0_SECRET_KEY }}
           
 
       - name: Check kover
